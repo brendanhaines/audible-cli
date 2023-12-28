@@ -50,24 +50,16 @@ class SupportedFiles(Enum):
         return pathlib.PurePath(value).suffix in cls.get_supported_list()
 
 
-def _get_input_files(
-    files: t.Union[t.Tuple[str], t.List[str]], recursive: bool = True
-) -> t.List[pathlib.Path]:
+def _get_input_files(files: t.Union[t.Tuple[str], t.List[str]], recursive: bool = True) -> t.List[pathlib.Path]:
     filenames = []
     for filename in files:
         # if the shell does not do filename globbing
         expanded = list(glob(filename, recursive=recursive))
 
-        if (
-            len(expanded) == 0
-            and "*" not in filename
-            and not SupportedFiles.is_supported_file(filename)
-        ):
+        if len(expanded) == 0 and "*" not in filename and not SupportedFiles.is_supported_file(filename):
             raise (click.BadParameter("{filename}: file not found or supported."))
 
-        expanded_filter = filter(
-            lambda x: SupportedFiles.is_supported_file(x), expanded
-        )
+        expanded_filter = filter(lambda x: SupportedFiles.is_supported_file(x), expanded)
         expanded = list(map(lambda x: pathlib.Path(x).resolve(), expanded_filter))
         filenames.extend(expanded)
 
@@ -188,9 +180,7 @@ class ApiChapterInfo:
             {
                 "length_ms": outro_dur_ms,
                 "start_offset_ms": self.get_runtime_length_ms() - outro_dur_ms,
-                "start_offset_sec": round(
-                    (self.get_runtime_length_ms() - outro_dur_ms) / 1000
-                ),
+                "start_offset_sec": round((self.get_runtime_length_ms() - outro_dur_ms) / 1000),
                 "title": "Outro",
             }
         )
@@ -249,9 +239,7 @@ class FFMeta:
             elif section == "CHAPTER":
                 # TODO: Tue etwas
                 for chapter in self._ffmeta_parsed[section]:
-                    self._write_section(
-                        fp, section, self._ffmeta_parsed[section][chapter], d
-                    )
+                    self._write_section(fp, section, self._ffmeta_parsed[section][chapter], d)
             else:
                 self._write_section(fp, section, self._ffmeta_parsed[section], d)
 
@@ -327,10 +315,7 @@ class FfmpegFileDecrypter:
         credentials = None
         if file_type == SupportedFiles.AAX:
             if activation_bytes is None:
-                raise AudibleCliException(
-                    "No activation bytes found. Do you ever run "
-                    "`audible activation-bytes`?"
-                )
+                raise AudibleCliException("No activation bytes found. Do you ever run " "`audible activation-bytes`?")
             credentials = activation_bytes
         elif file_type == SupportedFiles.AAXC:
             voucher_filename = _get_voucher_filename(file)
@@ -401,9 +386,7 @@ class FfmpegFileDecrypter:
 
     def rebuild_chapters(self) -> None:
         if not self._is_rebuilded:
-            self.ffmeta.update_chapters_from_chapter_info(
-                self.api_chapter, self._separate_intro_outro
-            )
+            self.ffmeta.update_chapters_from_chapter_info(self.api_chapter, self._separate_intro_outro)
             self._is_rebuilded = True
 
     def run(self):
@@ -503,10 +486,7 @@ class FfmpegFileDecrypter:
     "--separate-intro-outro",
     "-s",
     is_flag=True,
-    help=(
-        "Separate Audible Brand Intro and Outro to own Chapter. "
-        "Only use with `--rebuild-chapters`."
-    ),
+    help=("Separate Audible Brand Intro and Outro to own Chapter. " "Only use with `--rebuild-chapters`."),
 )
 @click.option(
     "--ignore-missing-chapters",
@@ -549,9 +529,7 @@ def cli(
 
     if all_:
         if files:
-            raise click.BadOptionUsage(
-                "If using `--all`, no FILES arguments can be used."
-            )
+            raise click.BadOptionUsage("If using `--all`, no FILES arguments can be used.")
         files = [f"*{suffix}" for suffix in SupportedFiles.get_supported_list()]
 
     files = _get_input_files(files, recursive=True)

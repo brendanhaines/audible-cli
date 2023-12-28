@@ -56,9 +56,7 @@ def list_profiles(session):
         is_primary = profile == session.config.primary_profile
         data.append(["*" if is_primary else "", profile, auth_file, country_code])
 
-    table = tabulate(
-        data, head, tablefmt="pretty", colalign=("center", "left", "left", "center")
-    )
+    table = tabulate(data, head, tablefmt="pretty", colalign=("center", "left", "left", "center"))
 
     echo(table)
 
@@ -167,12 +165,8 @@ def check_if_auth_file_not_exists(session, ctx, param, value):
     prompt="Please enter the country code",
     help="The country code for the marketplace you want to authenticate.",
 )
-@click.option(
-    "--external-login", is_flag=True, help="Authenticate using a web browser."
-)
-@click.option(
-    "--with-username", is_flag=True, help="Using a pre-amazon Audible account to login."
-)
+@click.option("--external-login", is_flag=True, help="Authenticate using a web browser.")
+@click.option("--with-username", is_flag=True, help="Using a pre-amazon Audible account to login.")
 @pass_session
 def add_auth_file(
     session,

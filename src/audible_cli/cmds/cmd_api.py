@@ -52,8 +52,7 @@ logger = logging.getLogger("audible_cli.cmds.cmd_api")
     "--country-code",
     "-c",
     type=click.Choice(AVAILABLE_MARKETPLACES),
-    help="Requested Audible marketplace. If not set, the country code for "
-    "the current profile is used.",
+    help="Requested Audible marketplace. If not set, the country code for " "the current profile is used.",
 )
 @pass_session
 def cli(session, **options):

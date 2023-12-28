@@ -62,9 +62,7 @@ an authentication to the audible server is necessary to register a new device.
     )
 
     echo()
-    d["profile_name"] = prompt(
-        "Please enter a name for your primary profile", default="audible"
-    )
+    d["profile_name"] = prompt("Please enter a name for your primary profile", default="audible")
 
     echo()
     d["country_code"] = prompt(
@@ -84,9 +82,7 @@ an authentication to the audible server is necessary to register a new device.
         secho("The auth file already exists in config dir.", bold=True)
         echo()
 
-        d["use_existing_auth_file"] = click.confirm(
-            "Should this file be used for the new profile", default=False
-        )
+        d["use_existing_auth_file"] = click.confirm("Should this file be used for the new profile", default=False)
 
         if d["use_existing_auth_file"]:
             echo()
@@ -114,16 +110,12 @@ an authentication to the audible server is necessary to register a new device.
         )
 
     echo()
-    d["external_login"] = click.confirm(
-        "Do you want to login with external browser?", default=False
-    )
+    d["external_login"] = click.confirm("Do you want to login with external browser?", default=False)
     d["audible_username"] = None
     d["audible_password"] = None
 
     echo()
-    d["with_username"] = click.confirm(
-        "Do you want to login with a pre-amazon Audible account?", default=False
-    )
+    d["with_username"] = click.confirm("Do you want to login with a pre-amazon Audible account?", default=False)
 
     if not d["external_login"]:
         d["audible_username"] = prompt("Please enter your amazon username")
@@ -143,10 +135,7 @@ def cli(session):
     config_file: pathlib.Path = session.app_dir / CONFIG_FILE
     config = ConfigFile(config_file, file_exists=False)
     if config_file.is_file():
-        m = (
-            f"Config file {config_file} already exists. Quickstart will "
-            f"not overwrite existing files."
-        )
+        m = f"Config file {config_file} already exists. Quickstart will " f"not overwrite existing files."
         logger.error(m)
         raise click.Abort()
 

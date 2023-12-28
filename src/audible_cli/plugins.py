@@ -29,9 +29,7 @@ def from_folder(plugin_dir: Union[str, pathlib.Path]):
 
     def decorator(group):
         if not isinstance(group, click.Group):
-            raise TypeError(
-                "Plugins can only be attached to an instance of " "click.Group()"
-            )
+            raise TypeError("Plugins can only be attached to an instance of " "click.Group()")
 
         pdir = pathlib.Path(plugin_dir)
         cmds = [x for x in pdir.glob("cmd_*.py")]
@@ -72,9 +70,7 @@ def from_entry_point(entry_point_group: str):
     def decorator(group):
         if not isinstance(group, click.Group):
             print(type(group))
-            raise TypeError(
-                "Plugins can only be attached to an instance of " "click.Group()"
-            )
+            raise TypeError("Plugins can only be attached to an instance of " "click.Group()")
 
         for entry_point in entry_point_group or ():
             try:
@@ -117,11 +113,7 @@ class BrokenCommand(click.Command):
             "\nWarning: entry point could not be loaded. Contact "
             "its author for help.\n\n\b\n" + traceback.format_exc()
         )
-        self.short_help = (
-            icon
-            + " Warning: could not load plugin. See `%s %s --help`."
-            % (util_name, self.name)
-        )
+        self.short_help = icon + " Warning: could not load plugin. See `%s %s --help`." % (util_name, self.name)
 
     def invoke(self, ctx):
         """

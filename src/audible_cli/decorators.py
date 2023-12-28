@@ -91,7 +91,7 @@ def version_option(func=None, **kwargs):
 
         url = "https://api.github.com/repos/mkb79/audible-cli/releases/latest"
         headers = {"Accept": "application/vnd.github.v3+json"}
-        logger.debug(f"Requesting Github API for latest release information")
+        logger.debug("Requesting Github API for latest release information")
         try:
             response = httpx.get(url, headers=headers, follow_redirects=True)
             response.raise_for_status()
@@ -107,8 +107,7 @@ def version_option(func=None, **kwargs):
         html_url = content["html_url"]
         if latest_version > current_version:
             click.echo(
-                f" (update available)\nVisit {html_url} "
-                f"for information about the new release.",
+                f" (update available)\nVisit {html_url} " f"for information about the new release.",
                 color=ctx.color,
             )
         else:
@@ -133,9 +132,7 @@ def version_option(func=None, **kwargs):
 def profile_option(func=None, **kwargs):
     kwargs.setdefault("callback", add_param_to_session)
     kwargs.setdefault("expose_value", False)
-    kwargs.setdefault(
-        "help", "The profile to use instead primary profile (case sensitive!)."
-    )
+    kwargs.setdefault("help", "The profile to use instead primary profile (case sensitive!).")
 
     option = click.option("--profile", "-P", **kwargs)
 
@@ -168,17 +165,13 @@ def verbosity_option(func=None, *, cli_logger=None, **kwargs):
     def callback(ctx, param, value):
         x = getattr(logging, value.upper(), None)
         if x is None:
-            raise click.BadParameter(
-                f"Must be CRITICAL, ERROR, WARNING, INFO or DEBUG, " f"not {value}"
-            )
+            raise click.BadParameter(f"Must be CRITICAL, ERROR, WARNING, INFO or DEBUG, " f"not {value}")
         cli_logger.setLevel(x)
 
     kwargs.setdefault("default", "INFO")
     kwargs.setdefault("metavar", "LVL")
     kwargs.setdefault("expose_value", False)
-    kwargs.setdefault(
-        "help", "Either CRITICAL, ERROR, WARNING, " "INFO or DEBUG. [default: INFO]"
-    )
+    kwargs.setdefault("help", "Either CRITICAL, ERROR, WARNING, " "INFO or DEBUG. [default: INFO]")
     kwargs.setdefault("is_eager", True)
     kwargs.setdefault("callback", callback)
 
@@ -205,10 +198,7 @@ def timeout_option(func=None, **kwargs):
     kwargs.setdefault("show_default", True)
     kwargs.setdefault(
         "help",
-        (
-            "Increase the timeout time if you got any TimeoutErrors. "
-            "Set to 0 to disable timeout."
-        ),
+        ("Increase the timeout time if you got any TimeoutErrors. " "Set to 0 to disable timeout."),
     )
     kwargs.setdefault("callback", callback)
     kwargs.setdefault("expose_value", False)
@@ -247,9 +237,7 @@ def bunch_size_option(func=None, **kwargs):
 
 def start_date_option(func=None, **kwargs):
     kwargs.setdefault("type", datetime_type)
-    kwargs.setdefault(
-        "help", "Only considers books added to library on or after this UTC date."
-    )
+    kwargs.setdefault("help", "Only considers books added to library on or after this UTC date.")
     kwargs.setdefault("callback", add_param_to_session)
     kwargs.setdefault("expose_value", False)
 
@@ -263,9 +251,7 @@ def start_date_option(func=None, **kwargs):
 
 def end_date_option(func=None, **kwargs):
     kwargs.setdefault("type", datetime_type)
-    kwargs.setdefault(
-        "help", "Only considers books added to library on or before this UTC date."
-    )
+    kwargs.setdefault("help", "Only considers books added to library on or before this UTC date.")
     kwargs.setdefault("callback", add_param_to_session)
     kwargs.setdefault("expose_value", False)
 

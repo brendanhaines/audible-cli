@@ -40,23 +40,16 @@ class ConfigFile:
             is loaded.
     """
 
-    def __init__(
-        self, filename: Union[str, pathlib.Path], file_exists: bool = True
-    ) -> None:
+    def __init__(self, filename: Union[str, pathlib.Path], file_exists: bool = True) -> None:
         filename = pathlib.Path(filename).resolve()
         config_data = DEFAULT_CONFIG_DATA.copy()
         file_data = {}
 
         if file_exists:
             if not filename.is_file():
-                raise AudibleCliException(
-                    f"Config file {click.format_filename(filename)} " f"does not exists"
-                )
+                raise AudibleCliException(f"Config file {click.format_filename(filename)} " f"does not exists")
             file_data = toml.load(filename)
-            logger.debug(
-                f"Config loaded from "
-                f"{click.format_filename(filename, shorten=True)}"
-            )
+            logger.debug(f"Config loaded from " f"{click.format_filename(filename, shorten=True)}")
 
         config_data.update(file_data)
 
@@ -107,9 +100,7 @@ class ConfigFile:
             raise AudibleCliException("No primary profile set in config")
         return self.app_config["primary_profile"]
 
-    def get_profile_option(
-        self, profile: str, option: str, default: Optional[str] = None
-    ) -> str:
+    def get_profile_option(self, profile: str, option: str, default: Optional[str] = None) -> str:
         """Returns the value for an option for the given profile.
 
         Looks first, if an option is in the ``profile`` section. If not, it
@@ -258,15 +249,11 @@ class Session:
         """
         profile = self.params.get("profile") or self.config.primary_profile
         if profile is None:
-            message = (
-                "No profile provided and primary profile not set " "properly in config."
-            )
+            message = "No profile provided and primary profile not set " "properly in config."
             raise AudibleCliException(message)
         return profile
 
-    def get_auth_for_profile(
-        self, profile: str, password: Optional[str] = None
-    ) -> audible.Authenticator:
+    def get_auth_for_profile(self, profile: str, password: Optional[str] = None) -> audible.Authenticator:
         """Returns an Authenticator for a profile
 
         If an Authenticator for this profile is already loaded, it will
@@ -319,9 +306,7 @@ class Session:
         password = self.params.get("password")
         return self.get_auth_for_profile(profile, password)
 
-    def get_client_for_profile(
-        self, profile: str, password: Optional[str] = None, **kwargs
-    ) -> AsyncClient:
+    def get_client_for_profile(self, profile: str, password: Optional[str] = None, **kwargs) -> AsyncClient:
         auth = self.get_auth_for_profile(profile, password)
         kwargs.setdefault("timeout", self.params.get("timeout", 5))
         return AsyncClient(auth=auth, **kwargs)
@@ -333,9 +318,7 @@ class Session:
 
 
 def get_app_dir() -> pathlib.Path:
-    app_dir = os.getenv(CONFIG_DIR_ENV) or click.get_app_dir(
-        "Audible", roaming=False, force_posix=True
-    )
+    app_dir = os.getenv(CONFIG_DIR_ENV) or click.get_app_dir("Audible", roaming=False, force_posix=True)
     return pathlib.Path(app_dir).resolve()
 
 

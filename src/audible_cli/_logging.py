@@ -10,9 +10,7 @@ from tqdm import tqdm
 audible_cli_logger = logging.getLogger("audible_cli")
 audible_cli_logger.addHandler(logging.NullHandler())
 
-log_formatter = logging.Formatter(
-    "%(asctime)s %(levelname)s [%(name)s] %(filename)s:%(lineno)d: %(message)s"
-)
+log_formatter = logging.Formatter("%(asctime)s %(levelname)s [%(name)s] %(filename)s:%(lineno)d: %(message)s")
 
 
 class AudibleCliLogHelper:
@@ -30,10 +28,7 @@ class AudibleCliLogHelper:
         audible_cli_logger.info(f"set log level for {obj.name} to: {level_name}")
 
         if 0 < obj.level < audible_cli_logger.level:
-            warn(
-                f"{obj.name} level is lower than "
-                f"{audible_cli_logger.name} logger level"
-            )
+            warn(f"{obj.name} level is lower than " f"{audible_cli_logger.name} logger level")
 
     def _set_handler(self, handler, name, level):
         handler.setFormatter(log_formatter)
@@ -47,9 +42,7 @@ class AudibleCliLogHelper:
         # noinspection PyTypeChecker
         self._set_handler(handler, "ConsoleLogger", level)
 
-    def set_file_logger(
-        self, filename: str, level: Optional[Union[str, int]] = None
-    ) -> None:
+    def set_file_logger(self, filename: str, level: Optional[Union[str, int]] = None) -> None:
         """Set up a file logger to the audible-cli package."""
         filename = pathlib.Path(filename)
         handler = logging.FileHandler(filename)
@@ -60,9 +53,7 @@ class AudibleCliLogHelper:
     def capture_warnings(status: bool = True) -> None:
         """Lets the logger capture warnings."""
         logging.captureWarnings(status)
-        audible_cli_logger.info(
-            f"Capture warnings {'activated' if status else 'deactivated'}"
-        )
+        audible_cli_logger.info(f"Capture warnings {'activated' if status else 'deactivated'}")
 
 
 log_helper = AudibleCliLogHelper()

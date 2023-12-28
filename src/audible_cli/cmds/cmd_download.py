@@ -157,9 +157,7 @@ class DownloadCounter:
 counter = DownloadCounter()
 
 
-async def download_cover(
-    client, output_dir, base_filename, item, res, overwrite_existing
-):
+async def download_cover(client, output_dir, base_filename, item, res, overwrite_existing):
     filename = f"{base_filename}_({str(res)}).jpg"
     filepath = output_dir / filename
 
@@ -196,9 +194,7 @@ async def download_pdf(client, output_dir, base_filename, item, overwrite_existi
         counter.count_pdf()
 
 
-async def download_chapters(
-    output_dir, base_filename, item, quality, overwrite_existing
-):
+async def download_chapters(output_dir, base_filename, item, quality, overwrite_existing):
     if not output_dir.is_dir():
         raise DirectoryDoesNotExists(output_dir)
 
@@ -242,9 +238,7 @@ async def download_annotations(output_dir, base_filename, item, overwrite_existi
     counter.count_annotation()
 
 
-async def download_aax(
-    client, output_dir, base_filename, item, quality, overwrite_existing, aax_fallback
-):
+async def download_aax(client, output_dir, base_filename, item, quality, overwrite_existing, aax_fallback):
     # url, codec = await item.get_aax_url(quality)
     try:
         url, codec = await item.get_aax_url_old(quality)
@@ -326,9 +320,7 @@ async def _reuse_voucher(lr_file, item):
     return lr, url, codec
 
 
-async def download_aaxc(
-    client, output_dir, base_filename, item, quality, overwrite_existing
-):
+async def download_aaxc(client, output_dir, base_filename, item, quality, overwrite_existing):
     lr, url, codec = None, None, None
 
     # https://github.com/mkb79/audible-cli/issues/60
@@ -347,14 +339,10 @@ async def download_aaxc(
                 try:
                     lr, url, codec = await _reuse_voucher(lr_file, item)
                 except DownloadUrlExpired:
-                    logger.debug(
-                        f"Download url in {lr_file} is expired. Refreshing license."
-                    )
+                    logger.debug(f"Download url in {lr_file} is expired. Refreshing license.")
                     overwrite_existing = True
                 except VoucherNeedRefresh:
-                    logger.debug(
-                        f"Refresh date for voucher {lr_file} reached. Refreshing license."
-                    )
+                    logger.debug(f"Refresh date for voucher {lr_file} reached. Refreshing license.")
                     overwrite_existing = True
 
     is_aycl = item.benefit_id == "AYCL"
@@ -541,13 +529,9 @@ def display_counter():
     help="download all library items, overrides --asin and --title options",
 )
 @click.option("--asin", "-a", multiple=True, help="asin of the audiobook")
-@click.option(
-    "--title", "-t", multiple=True, help="tile of the audiobook (partial search)"
-)
+@click.option("--title", "-t", multiple=True, help="tile of the audiobook (partial search)")
 @click.option("--aax", is_flag=True, help="Download book in aax format")
-@click.option(
-    "--aaxc", is_flag=True, help="Download book in aaxc format incl. voucher file"
-)
+@click.option("--aaxc", is_flag=True, help="Download book in aaxc format incl. voucher file")
 @click.option(
     "--aax-fallback",
     is_flag=True,
@@ -561,17 +545,11 @@ def display_counter():
     type=click.Choice(["best", "high", "normal"]),
     help="download quality",
 )
-@click.option(
-    "--pdf", is_flag=True, help="downloads the pdf in addition to the audiobook"
-)
-@click.option(
-    "--cover", is_flag=True, help="downloads the cover in addition to the audiobook"
-)
+@click.option("--pdf", is_flag=True, help="downloads the pdf in addition to the audiobook")
+@click.option("--cover", is_flag=True, help="downloads the cover in addition to the audiobook")
 @click.option(
     "--cover-size",
-    type=click.Choice(
-        ["252", "315", "360", "408", "500", "558", "570", "882", "900", "1215"]
-    ),
+    type=click.Choice(["252", "315", "360", "408", "500", "558", "570", "882", "900", "1215"]),
     default=["500"],
     multiple=True,
     help="The cover pixel size. This option can be provided multiple times.",
@@ -586,9 +564,7 @@ def display_counter():
 @end_date_option
 @click.option("--no-confirm", "-y", is_flag=True, help="start without confirm")
 @click.option("--overwrite", is_flag=True, help="rename existing files")
-@click.option(
-    "--ignore-errors", is_flag=True, help="ignore errors and continue with the rest"
-)
+@click.option("--ignore-errors", is_flag=True, help="ignore errors and continue with the rest")
 @click.option(
     "--jobs",
     "-j",
@@ -610,9 +586,7 @@ def display_counter():
     is_flag=True,
     help="Resolve podcasts to download a single episode via asin or title",
 )
-@click.option(
-    "--ignore-podcasts", is_flag=True, help="Ignore a podcast if it have episodes"
-)
+@click.option("--ignore-podcasts", is_flag=True, help="Ignore a podcast if it have episodes")
 @bunch_size_option
 @pass_session
 @pass_client(headers=CLIENT_HEADERS)
@@ -626,7 +600,7 @@ async def cli(session, api_client, **params):
     asins = params.get("asin")
     titles = params.get("title")
     if get_all and (asins or titles):
-        logger.error(f"Do not mix *asin* or *title* option with *all* option.")
+        logger.error("Do not mix *asin* or *title* option with *all* option.")
         click.Abort()
 
     # what to download
@@ -635,9 +609,7 @@ async def cli(session, api_client, **params):
     aax_fallback = params.get("aax_fallback")
     if aax_fallback:
         if get_aax:
-            logger.info(
-                "Using --aax is redundant and can be left when using --aax-fallback"
-            )
+            logger.info("Using --aax is redundant and can be left when using --aax-fallback")
         get_aax = True
         if get_aaxc:
             logger.warning("Do not mix --aaxc with --aax-fallback option.")
@@ -667,28 +639,20 @@ async def cli(session, api_client, **params):
         raise click.Abort()
 
     if start_date is not None:
-        logger.info(
-            f"Selected start date: {start_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}"
-        )
+        logger.info(f"Selected start date: {start_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}")
     if end_date is not None:
         logger.info(f"Selected end date: {end_date.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}")
 
     filename_mode = params.get("filename_mode")
     if filename_mode == "config":
-        filename_mode = (
-            session.config.get_profile_option(session.selected_profile, "filename_mode")
-            or "ascii"
-        )
+        filename_mode = session.config.get_profile_option(session.selected_profile, "filename_mode") or "ascii"
 
     # fetch the user library
     library = await Library.from_api_full_sync(
         api_client,
         image_sizes=", ".join(cover_sizes),
         bunch_size=bunch_size,
-        response_groups=(
-            "product_desc, media, product_attrs, relationships, "
-            "series, customer_rights, pdf_url"
-        ),
+        response_groups=("product_desc, media, product_attrs, relationships, " "series, customer_rights, pdf_url"),
         start_date=start_date,
         end_date=end_date,
         status="Active",
@@ -781,10 +745,7 @@ async def cli(session, api_client, **params):
 
     try:
         # schedule the consumer
-        consumers = [
-            asyncio.ensure_future(consume(queue, ignore_errors))
-            for _ in range(sim_jobs)
-        ]
+        consumers = [asyncio.ensure_future(consume(queue, ignore_errors)) for _ in range(sim_jobs)]
         # wait until the consumer has processed all items
         await queue.join()
 

@@ -69,9 +69,7 @@ async def _get_library(session, client, resolve_podcasts):
     help="Output format",
 )
 @bunch_size_option
-@click.option(
-    "--resolve-podcasts", is_flag=True, help="Resolve podcasts to show all episodes"
-)
+@click.option("--resolve-podcasts", is_flag=True, help="Resolve podcasts to show all episodes")
 @start_date_option
 @end_date_option
 @pass_session
@@ -95,9 +93,7 @@ async def export_library(session, client, **params):
                 data_row["series_sequence"] = v[0]["sequence"]
             elif key == "rating":
                 overall_distributing = v.get("overall_distribution") or {}
-                data_row["rating"] = overall_distributing.get(
-                    "display_average_rating", "-"
-                )
+                data_row["rating"] = overall_distributing.get("display_average_rating", "-")
                 data_row["num_ratings"] = overall_distributing.get("num_ratings", "-")
             elif key == "library_status":
                 data_row["date_added"] = v["date_added"]
@@ -174,9 +170,7 @@ async def export_library(session, client, **params):
 @cli.command("list")
 @timeout_option
 @bunch_size_option
-@click.option(
-    "--resolve-podcasts", is_flag=True, help="Resolve podcasts to show all episodes"
-)
+@click.option("--resolve-podcasts", is_flag=True, help="Resolve podcasts to show all episodes")
 @start_date_option
 @end_date_option
 @pass_session
@@ -188,15 +182,11 @@ async def list_library(session, client, resolve_podcasts):
     def _prepare_item(item):
         fields = [item.asin]
 
-        authors = ", ".join(
-            sorted(a["name"] for a in item.authors) if item.authors else ""
-        )
+        authors = ", ".join(sorted(a["name"] for a in item.authors) if item.authors else "")
         if authors:
             fields.append(authors)
 
-        series = ", ".join(
-            sorted(s["title"] for s in item.series) if item.series else ""
-        )
+        series = ", ".join(sorted(s["title"] for s in item.series) if item.series else "")
         if series:
             fields.append(series)
 

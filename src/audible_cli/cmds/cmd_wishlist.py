@@ -76,9 +76,7 @@ async def export_wishlist(client, **params):
                 data_row["series_sequence"] = v[0]["sequence"]
             elif key == "rating":
                 overall_distributing = v.get("overall_distribution") or {}
-                data_row["rating"] = overall_distributing.get(
-                    "display_average_rating", "-"
-                )
+                data_row["rating"] = overall_distributing.get("display_average_rating", "-")
                 data_row["num_ratings"] = overall_distributing.get("num_ratings", "-")
             elif key == "added_timestamp":
                 data_row["date_added"] = v
@@ -155,15 +153,11 @@ async def list_wishlist(client):
     def _prepare_item(item):
         fields = [item.asin]
 
-        authors = ", ".join(
-            sorted(a["name"] for a in item.authors) if item.authors else ""
-        )
+        authors = ", ".join(sorted(a["name"] for a in item.authors) if item.authors else "")
         if authors:
             fields.append(authors)
 
-        series = ", ".join(
-            sorted(s["title"] for s in item.series) if item.series else ""
-        )
+        series = ", ".join(sorted(s["title"] for s in item.series) if item.series else "")
         if series:
             fields.append(series)
 
@@ -180,9 +174,7 @@ async def list_wishlist(client):
 
 @cli.command("add")
 @click.option("--asin", "-a", multiple=True, help="asin of the audiobook")
-@click.option(
-    "--title", "-t", multiple=True, help="tile of the audiobook (partial search)"
-)
+@click.option("--title", "-t", multiple=True, help="tile of the audiobook (partial search)")
 @timeout_option
 @pass_client(limits=limits)
 async def add_wishlist(client, asin, title):
@@ -251,9 +243,7 @@ async def add_wishlist(client, asin, title):
 
 @cli.command("remove")
 @click.option("--asin", "-a", multiple=True, help="asin of the audiobook")
-@click.option(
-    "--title", "-t", multiple=True, help="tile of the audiobook (partial search)"
-)
+@click.option("--title", "-t", multiple=True, help="tile of the audiobook (partial search)")
 @timeout_option
 @pass_client(limits=limits)
 async def remove_wishlist(client, asin, title):

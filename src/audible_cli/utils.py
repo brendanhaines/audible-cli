@@ -87,9 +87,7 @@ def build_auth_file(
 
     file_options = {"filename": pathlib.Path(filename)}
     if file_password:
-        file_options.update(
-            password=file_password, encryption=DEFAULT_AUTH_FILE_ENCRYPTION
-        )
+        file_options.update(password=file_password, encryption=DEFAULT_AUTH_FILE_ENCRYPTION)
 
     if external_login:
         auth = Authenticator.from_login_external(
@@ -118,9 +116,7 @@ def build_auth_file(
 
 
 class LongestSubString:
-    def __init__(
-        self, search_for: str, search_in: str, case_sensitive: bool = False
-    ) -> None:
+    def __init__(self, search_for: str, search_in: str, case_sensitive: bool = False) -> None:
         if case_sensitive is False:
             search_for = search_for.lower()
             search_in = search_in.lower()
@@ -131,9 +127,7 @@ class LongestSubString:
         self._match = self.match()
 
     def match(self):
-        return self._s.find_longest_match(
-            0, len(self._search_for), 0, len(self._search_in)
-        )
+        return self._s.find_longest_match(0, len(self._search_for), 0, len(self._search_in))
 
     @property
     def longest_match(self):
@@ -259,9 +253,7 @@ class Downloader:
         async with self._client.stream("GET", self._url, follow_redirects=True) as r:
             length = r.headers.get("Content-Length")
             content_type = r.headers.get("Content-Type")
-            progressbar = (
-                self._progressbar(int(length)) if length and pb else DummyProgressBar()
-            )
+            progressbar = self._progressbar(int(length)) if length and pb else DummyProgressBar()
 
             with progressbar:
                 async with aiofiles.open(self._tmp_file, mode="wb") as f:
@@ -289,9 +281,7 @@ class Downloader:
             self._remove_tmp_file()
 
 
-def export_to_csv(
-    file: pathlib.Path, data: list, headers: Union[list, tuple], dialect: str
-) -> None:
+def export_to_csv(file: pathlib.Path, data: list, headers: Union[list, tuple], dialect: str) -> None:
     with file.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=headers, dialect=dialect)
         writer.writeheader()

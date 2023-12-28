@@ -80,9 +80,7 @@ def _prepare_library_for_export(library):
         if date_added is not None:
             date_added = date_added["date_added"]
             date_added = (
-                datetime.strptime(date_added, "%Y-%m-%dT%H:%M:%S.%fZ")
-                .replace(tzinfo=timezone.utc)
-                .astimezone()
+                datetime.strptime(date_added, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc).astimezone()
             )
             date_added = date_added.astimezone().date().isoformat()
 
@@ -99,8 +97,6 @@ def _prepare_library_for_export(library):
     logger.debug(f"ISBNs from API: {isbn_api_counter}")
     logger.debug(f"ISBNs requested with isbntools: {isbn_counter}")
     logger.debug(f"No result with isbntools: {isbn_no_result_counter}")
-    logger.debug(
-        f"title skipped from file due to no ISBN or title not read: " f"{skipped_items}"
-    )
+    logger.debug(f"title skipped from file due to no ISBN or title not read: " f"{skipped_items}")
 
     return prepared_library

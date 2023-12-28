@@ -55,19 +55,13 @@ class ApiMeta:
         return self._meta_parsed["content_metadata"]["chapter_info"]["chapters"]
 
     def get_intro_duration_ms(self):
-        return self._meta_parsed["content_metadata"]["chapter_info"][
-            "brandIntroDurationMs"
-        ]
+        return self._meta_parsed["content_metadata"]["chapter_info"]["brandIntroDurationMs"]
 
     def get_outro_duration_ms(self):
-        return self._meta_parsed["content_metadata"]["chapter_info"][
-            "brandOutroDurationMs"
-        ]
+        return self._meta_parsed["content_metadata"]["chapter_info"]["brandOutroDurationMs"]
 
     def get_runtime_length_ms(self):
-        return self._meta_parsed["content_metadata"]["chapter_info"][
-            "runtime_length_ms"
-        ]
+        return self._meta_parsed["content_metadata"]["chapter_info"]["runtime_length_ms"]
 
 
 class FFMeta:
@@ -120,9 +114,7 @@ class FFMeta:
             elif section == "CHAPTER":
                 # TODO: Tue etwas
                 for chapter in self._ffmeta_parsed[section]:
-                    self._write_section(
-                        fp, section, self._ffmeta_parsed[section][chapter], d
-                    )
+                    self._write_section(fp, section, self._ffmeta_parsed[section][chapter], d)
             else:
                 self._write_section(fp, section, self._ffmeta_parsed[section], d)
 
@@ -198,9 +190,7 @@ class FFMeta:
                 {
                     "length_ms": outro_dur_ms,
                     "start_offset_ms": api_meta.get_runtime_length_ms() - outro_dur_ms,
-                    "start_offset_sec": round(
-                        (api_meta.get_runtime_length_ms() - outro_dur_ms) / 1000
-                    ),
+                    "start_offset_sec": round((api_meta.get_runtime_length_ms() - outro_dur_ms) / 1000),
                     "title": "Outro",
                 }
             )
