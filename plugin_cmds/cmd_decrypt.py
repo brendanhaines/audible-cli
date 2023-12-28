@@ -51,8 +51,7 @@ class SupportedFiles(Enum):
 
 
 def _get_input_files(
-    files: t.Union[t.Tuple[str], t.List[str]],
-    recursive: bool = True
+    files: t.Union[t.Tuple[str], t.List[str]], recursive: bool = True
 ) -> t.List[pathlib.Path]:
     filenames = []
     for filename in files:
@@ -61,10 +60,10 @@ def _get_input_files(
 
         if (
             len(expanded) == 0
-            and '*' not in filename
+            and "*" not in filename
             and not SupportedFiles.is_supported_file(filename)
         ):
-            raise(click.BadParameter("{filename}: file not found or supported."))
+            raise (click.BadParameter("{filename}: file not found or supported."))
 
         expanded_filter = filter(
             lambda x: SupportedFiles.is_supported_file(x), expanded
@@ -86,7 +85,7 @@ def recursive_lookup_dict(key: str, dictionary: t.Dict[str, t.Any]) -> t.Any:
                 continue
             else:
                 return item
-            
+
     raise KeyError
 
 
@@ -166,17 +165,17 @@ class ApiChapterInfo:
     def _separate_intro_outro(self, chapters):
         echo("Separate Audible Brand Intro and Outro to own Chapter.")
         chapters.sort(key=operator.itemgetter("start_offset_ms"))
-    
+
         first = chapters[0]
         intro_dur_ms = self.get_intro_duration_ms()
         first["start_offset_ms"] = intro_dur_ms
         first["start_offset_sec"] = round(first["start_offset_ms"] / 1000)
         first["length_ms"] -= intro_dur_ms
-    
+
         last = chapters[-1]
         outro_dur_ms = self.get_outro_duration_ms()
         last["length_ms"] -= outro_dur_ms
-    
+
         chapters.append(
             {
                 "length_ms": intro_dur_ms,
@@ -196,7 +195,7 @@ class ApiChapterInfo:
             }
         )
         chapters.sort(key=operator.itemgetter("start_offset_ms"))
-    
+
         return chapters
 
 
@@ -269,9 +268,7 @@ class FFMeta:
                 fp.write(f"{key}{delimiter}{value}\n")
 
     def update_chapters_from_chapter_info(
-        self,
-        chapter_info: ApiChapterInfo,
-        separate_intro_outro: bool = False
+        self, chapter_info: ApiChapterInfo, separate_intro_outro: bool = False
     ) -> None:
         if not chapter_info.is_accurate():
             echo("Metadata from API is not accurate. Skip.")
@@ -323,7 +320,7 @@ class FfmpegFileDecrypter:
         activation_bytes: t.Optional[str],
         rebuild_chapters: bool,
         ignore_missing_chapters: bool,
-        separate_intro_outro: bool
+        separate_intro_outro: bool,
     ) -> None:
         file_type = SupportedFiles(file.suffix)
 
@@ -385,9 +382,9 @@ class FfmpegFileDecrypter:
                 credentials_cmd = [
                     "-activation_bytes",
                     quote(self._credentials),
-                ]    
+                ]
             base_cmd.extend(credentials_cmd)
-    
+
             extract_cmd = [
                 "-i",
                 quote(str(self._source)),
@@ -435,7 +432,7 @@ class FfmpegFileDecrypter:
             credentials_cmd = [
                 "-activation_bytes",
                 quote(self._credentials),
-            ]    
+            ]
         base_cmd.extend(credentials_cmd)
         base_cmd.extend(
             [
@@ -476,6 +473,7 @@ class FfmpegFileDecrypter:
 
         echo(f"File decryption successful: {outfile}")
 
+
 @click.command("decrypt")
 @click.argument("files", nargs=-1)
 @click.option(
@@ -485,21 +483,21 @@ class FfmpegFileDecrypter:
     type=click.Path(exists=True, dir_okay=True),
     default=pathlib.Path.cwd(),
     help="Folder where the decrypted files should be saved.",
-    show_default=True
+    show_default=True,
 )
 @click.option(
     "--all",
     "-a",
     "all_",
     is_flag=True,
-    help="Decrypt all aax and aaxc files in current folder."
+    help="Decrypt all aax and aaxc files in current folder.",
 )
 @click.option("--overwrite", is_flag=True, help="Overwrite existing files.")
 @click.option(
     "--rebuild-chapters",
     "-r",
     is_flag=True,
-    help="Rebuild chapters with chapters from voucher or chapter file."
+    help="Rebuild chapters with chapters from voucher or chapter file.",
 )
 @click.option(
     "--separate-intro-outro",
@@ -529,14 +527,14 @@ def cli(
     overwrite: bool,
     rebuild_chapters: bool,
     separate_intro_outro: bool,
-    ignore_missing_chapters: bool
+    ignore_missing_chapters: bool,
 ):
     """Decrypt audiobooks downloaded with audible-cli.
 
     FILES are the names of the file to decrypt.
     Wildcards `*` and recursive lookup with `**` are supported.
 
-    Only FILES with `aax` or `aaxc` suffix are processed. 
+    Only FILES with `aax` or `aaxc` suffix are processed.
     Other files are skipped silently.
     """
     if not which("ffmpeg"):
@@ -566,6 +564,6 @@ def cli(
                 activation_bytes=session.auth.activation_bytes,
                 rebuild_chapters=rebuild_chapters,
                 ignore_missing_chapters=ignore_missing_chapters,
-                separate_intro_outro=separate_intro_outro
+                separate_intro_outro=separate_intro_outro,
             )
             decrypter.run()

@@ -12,6 +12,7 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath("../../src"))
 import audible_cli
 
@@ -37,7 +38,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
-    "sphinx.ext.autosummary"
+    "sphinx.ext.autosummary",
 ]
 
 master_doc = "index"

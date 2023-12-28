@@ -37,12 +37,12 @@ setup(
     author=read_from_file("__author__"),
     author_email=read_from_file("__author_email__"),
     classifiers=[
-         "Development Status :: 4 - Beta",
-         "Intended Audience :: Developers",
-         "License :: OSI Approved :: GNU Affero General Public License v3",
-         "Programming Language :: Python :: 3.6",
-         "Programming Language :: Python :: 3.7",
-         "Programming Language :: Python :: 3.8"
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU Affero General Public License v3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     install_requires=[
         "aiofiles",
@@ -55,13 +55,9 @@ setup(
         "tabulate",
         "toml",
         "tqdm",
-        "questionary"
+        "questionary",
     ],
-    extras_require={
-        'pyi': [
-            'pyinstaller'
-        ]
-    },
+    extras_require={"pyi": ["pyinstaller"]},
     python_requires=">=3.6",
     keywords="Audible, API, async, cli",
     long_description=long_description,
@@ -71,7 +67,9 @@ setup(
         "Source": "https://github.com/mkb79/Audible-cli",
     },
     entry_points={
-        "console_scripts": ["audible = audible_cli:main",
-                            "audible-quickstart = audible_cli:quickstart"]
-    }
+        "console_scripts": [
+            "audible = audible_cli:main",
+            "audible-quickstart = audible_cli:quickstart",
+        ]
+    },
 )
