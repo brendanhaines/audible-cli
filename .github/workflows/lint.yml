@@ -1,5 +1,7 @@
 name: Lint
-on: [push]
+
+on: [push, pull_request]
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -9,5 +11,4 @@ jobs:
         with:
           options: "--check --verbose"
           src: "./src"
-          jupyter: true
-          version: "21.5b1"
+          version: "~= 22.0"
