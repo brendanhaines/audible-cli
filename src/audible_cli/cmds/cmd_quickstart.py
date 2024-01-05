@@ -37,15 +37,15 @@ def ask_user(config: ConfigFile):
     secho(welcome_message, bold=True)
     secho(len(welcome_message) * "=", bold=True)
 
-    intro = """Quickstart will guide you through the process of build a basic 
+    intro = """Quickstart will guide you through the process of build a basic
 config, create a first profile and assign an auth file to the profile now.
 
-The profile created by quickstart will set as primary. It will be used, if no 
+The profile created by quickstart will set as primary. It will be used, if no
 other profile is chosen.
 
-An auth file can be shared between multiple profiles. Simply enter the name of 
-an existing auth file when asked about it. Auth files have to be stored in the 
-config dir. If the auth file doesn't exists, it will be created. In this case, 
+An auth file can be shared between multiple profiles. Simply enter the name of
+an existing auth file when asked about it. Auth files have to be stored in the
+config dir. If the auth file doesn't exists, it will be created. In this case,
 an authentication to the audible server is necessary to register a new device.
 """
     echo()
